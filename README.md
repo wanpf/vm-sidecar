@@ -1,10 +1,7 @@
+# 1. Set the required environment variables.  
+for example:    
+export PIPY_NIC=eth0  
+export PIPY_REPO=http://10.10.10.1:6060/repo/fsm-sidecar/sidecar.vm49.derive-vm/
 
-# Add pipy user.  
-run ./1-add-user.sh  
-
-# Create iptable rules  
-run ./2-iptables-init.sh  
-
-# Set pipy repo url and run pipy  
-PIPY_REPO='... repo url' ./3-run-pipy.sh  
-
+# 2. Run the pipy process.
+sh run-sidecar.sh
