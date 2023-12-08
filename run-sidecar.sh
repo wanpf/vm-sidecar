@@ -91,6 +91,7 @@ ns=$(cat /etc/resolv.conf 2>/dev/null | grep "^nameserver" | grep -v 127.0.0.153
 if [ -n "$ns" ]
 then
     # export PIPY_NAMESERVER=$ns
+    echo ""
 fi
 
 chmod 755 ./pipy
