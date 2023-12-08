@@ -22,7 +22,7 @@ then
       exit 1
 fi
 
-ip=`ip -4 addr show $PIPY_NIC 2>/dev/null | grep inet | sed 's/\// /g' | awk '{print $2}'`
+ip=$(ip -4 addr show "$PIPY_NIC" 2>/dev/null | grep inet | sed 's/\// /g' | awk '{print $2}')
 if [ -z "$ip" ]
 then
     echo  "Unable to get ip from nic [$PIPY_NIC]"
@@ -81,8 +81,14 @@ then
     sed -i '0,/^nameserver/!b;//i\nameserver 127.0.0.153' /etc/resolv.conf
 fi
 
-ns=`cat /etc/resolv.conf 2>/dev/null | grep "^nameserver" | grep -v 127.0.0.153 | awk '{print $2}'`
-if [ ! -z "$ns" ]
+cat /etc/resolv.conf 2>&1 | grep svc.cluster.local >/dev/null
+if [ $? -ne 0 ];
+then
+    sed -i '0,/^search/{s/search/search svc.cluster.local cluster.local/}' /etc/resolv.conf
+fi
+
+ns=$(cat /etc/resolv.conf 2>/dev/null | grep "^nameserver" | grep -v 127.0.0.153 | head -n 1 | awk '{print $2}')
+if [ -n "$ns" ]
 then
     export PIPY_NAMESERVER=$ns
 fi
